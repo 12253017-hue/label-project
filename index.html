@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
+<html lang="ja"><head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LABEL — 発達傾向セルフチェック</title>
+  <title>LABEL - 考え方や感じ方の“クセ”を見つめ直す診断</title>
+ <link rel="stylesheet" href="GP.css">
+<script src="GP.js" defer></script>
+	<!-- 音声ファイルを非表示で読み込む -->
   <style>
     :root{
       --bg:#b1dff5;
-      --card:#fffde7;
+      --card:#b1dff5;
       --muted:#555;
       --accent:#1976d2;
       --radius:12px;
@@ -24,9 +26,49 @@
       align-items:center;
       justify-content:center;
       padding:24px;
-      color:#222;
+      color:#155a9a;
     }
+	  
+/* 雲GIFのサイズと位置調整 */
+#cloud1 {
+  position: absolute;
+  top: 10px;       /* ロゴと同じ高さくらい */
+  left: -300px;     /* ロゴの右に配置 */
+  width: 350px;    /* 大きめに表示 */
+  z-index: 500;    /* ロゴより手前 */
+  animation: float 4s ease-in-out infinite;
+}
 
+/* 浮く動き */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.cloud-gif:nth-child(1) { top: 30px; left: 50px; width: 150px; }
+
+	  
+	  /* 雲GIFのサイズと位置調整 */
+#cloud2 {
+  position: absolute;
+ 
+  top: 100px;      
+  left: 700px;     
+  width: 350px;    
+  z-index: 500;    
+  animation: float 2s ease-in-out infinite;
+}
+
+/* 浮く動き */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.cloud-gif:nth-child(1) { top: 30px; left: 50px; width: 150px; }
+	  
     #app{
       width:100%;
       max-width:760px;
@@ -38,12 +80,19 @@
       border: 1px solid rgba(0,0,0,0.04);
     }
 
-    header{
-      display:flex;
-      gap:16px;
-      align-items:center;
-      margin-bottom:10px;
-    }
+    header {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end; /* ← 上から下に寄せる */
+  margin-bottom: 30px;
+}
+	  
+	  header p.lead {
+  position: relative;
+  top: 12px; /* 下方向に移動 */
+  color: #155a9a; /* 色変更 */
+}
+
 
     .logo{
       width:64px;
@@ -87,6 +136,7 @@
     }
 
     .q-index{
+	  transform: translateX(15px); /* 左に10px移動 */
       min-width:44px;
       height:44px;
       background:#fff;
@@ -96,12 +146,22 @@
       justify-content:center;
       font-weight:700;
       box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+	 
     }
+	  
+	  .controls {
+  display: flex;
+  justify-content: center; /* 横方向中央揃え */
+  gap: 12px;               /* ボタン間の間隔 */
+  margin-top: 14px;
+}
+
 
     .q-text{
-      flex:1 1 0;
+	  right: 12px;
+      flex:110;
       font-size:16px;
-      line-height:1.4;
+      margin-left: -40px; /* 左に少し寄せる */
     }
 
     .controls{
@@ -110,7 +170,15 @@
       margin-top:14px;
     }
 
-    button.btn{
+
+    button.btn.primary{
+      background:linear-gradient(180deg,var(--accent),#155a9a);
+      color:#fff;
+      box-shadow: 0 8px 18px rgba(25,118,210,0.18);
+    }
+	  
+	 button.btn{
+	  background: linear-gradient(180deg, var(--accent), #155a9a);
       padding:10px 14px;
       border-radius:10px;
       border:0;
@@ -120,14 +188,8 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.06);
     }
 
-    button.btn.primary{
-      background:linear-gradient(180deg,var(--accent),#155a9a);
-      color:#fff;
-      box-shadow: 0 8px 18px rgba(25,118,210,0.18);
-    }
-
     button.btn.ghost{
-      background:transparent;
+      background:#155a9a;
       border:1px solid rgba(0,0,0,0.06);
     }
 
@@ -189,6 +251,29 @@
       background:linear-gradient(180deg,#42a5f5,#1e88e5);
       transition:height .6s ease;
     }
+	  
+/* LD（学習の得意不得意）赤系 */
+#ldFill {
+  background: linear-gradient(180deg, #ff8a80, #d32f2f); /* 薄い赤 → 濃い赤 */
+}
+
+/* ASD（自閉スペクトラム）緑系 */
+#asdFill {
+  background: linear-gradient(180deg, #a5d6a7, #2e7d32); /* 薄い緑 → 濃い緑 */
+}
+
+/* ADHD（注意・多動）黄色系 */
+#adhdFill {
+  background: linear-gradient(180deg, #fff59d, #fbc02d); /* 薄い黄色 → 濃い黄色 */
+}
+
+	  
+.result-LD { color: #d32f2f; font-weight: 700; }
+.result-ASD { color: #2e7d32; font-weight: 700; }
+.result-ADHD { color: #b8860b; font-weight: 700; } 
+
+
+
 
     .bar label{
       font-size:12px;
@@ -198,14 +283,15 @@
     .desc{
       margin-top:12px;
       font-size:14px;
-      color:#222;
+      color:#155a9a;
       line-height:1.5;
     }
+	  
 
     .note{
       margin-top:10px;
       font-size:12px;
-      color:#333;
+      color:#155a9a;
       background:rgba(0,0,0,0.03);
       padding:8px;
       border-radius:8px;
@@ -229,17 +315,29 @@
       .bars{flex-direction:row;gap:8px}
       .bar .meter{height:80px}
     }
+	  
+	  /* 「もう一度」ボタンの文字色 */
+#retryBtn {
+  color: #1976d2;
+  font-weight: 700;
+ box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+	 
+	  
   </style>
 </head>
 <body>
   <div id="app" role="application" aria-labelledby="appTitle">
+ 　<img id="cloud1" class="cloud-gif" src="cloud.gif" alt="雲キャラ1">
+　<img id="cloud2" class="cloud-gif" src="cloud.gif" alt="雲キャラ2">
+
 <header>
 <div>
-<img src="LABEL_logo.png" alt="LABELロゴ" width="100" hight="300">
+<img src="LABEL_logo.svg" alt="logo" width="100" height="50">
+   <audio id="clickSound" src="click.mp3"></audio>
 
 	</div>
-        <h1 id="appTitle">LABEL ― 違い”を肯定する</h1>
-        <p class="lead">これは専門的診断ではありません。傾向を見るためのセルフチェックです。結果は参考にして、必要なら専門機関へ相談してください。</p>
+        <p class="lead">LABELは、考え方や感じ方のクセを知る診断サイトです。ちょっとした質問を通して、自分の中の傾向や得意・苦手を見つけていきます。正解を出すことよりも、「そうかも」と気づくことを大切にしています。</p>
     </header>
 
     <main>
@@ -286,7 +384,7 @@
         </div>
 
         <footer>
-          <div class="small">作成：LABEL</div>
+          <div class="small">作成：野田千裕</div>
           <div>
             <button class="btn" id="retryBtn">もう一度</button>
             <button class="btn primary" id="shareBtn">結果をテキストでコピー</button>
@@ -294,9 +392,11 @@
         </footer>
       </section>
     </main>
-  </div>
+</div>
 
   <script>
+	  
+	  
     // 質問リスト（LD / ASD / ADHD 各5問、合計15問）
     const questions = [
       { text: "文字や文章を読むとき、内容を追うのが人より疲れることがある", type: "LD" },
@@ -402,18 +502,18 @@
       const top = scores.filter(s => s.v === maxV).map(s => s.key);
 
       const summaries = {
-        LD: "学習に関する得意・不得意の傾向が見られます。読む・書く・計算の一部で困りやすいのかもしれません。教え方やツールの工夫で対応できます。",
-        ASD: "相手の表情・微妙な意図や感覚面、ルールへのこだわりなどの特徴が見られます。対人場面で疲れやすい・興味が偏りやすいかもしれません。",
-        ADHD: "集中の持続や衝動、忘れやすさなどの傾向が見られます。計画より行動が先出ちになったり、発想力・行動力が強みになる場合もあります。"
+        LD: "学習に関する得意・不得意の傾向が見られます。読む・書く・計算の一部で困りやすいかもしれません。教え方やツールの工夫で対応できます。<br>",
+        ASD: "相手の表情・微妙な意図や感覚面、ルールへのこだわりなどの特徴が見られます。対人場面で疲れやすい・興味が偏りやすいかもしれません。<br>",
+        ADHD: "集中の持続や衝動、忘れやすさなどの傾向が見られます。計画より行動が先出ちになったり、発想力・行動力が強みになる場合もあります。<br>"
       };
 
       let desc = "";
       if(maxV === 0){
-        desc = "今回の回答では顕著な偏りは見られませんでした。状況や日によって変わることもあるので、気になる点が出たら再チェックしてみてください。";
+        desc = "<br>今回の回答では顕著な偏りは見られませんでした。状況や日によって変わることもあるので、気になる点が出たら再チェックしてみてください。<br>";
       } else if(top.length === 1){
-        desc = `もっとも高かったのは <strong>${top[0]}</strong> の傾向です。<br>${summaries[top[0]]}`;
+        desc = `<br>もっとも高かったのは <strong>${top[0]}</strong> の傾向です。<br>${summaries[top[0]]}`;
       } else {
-        desc = `複数の傾向が近い結果になりました（<strong>${top.join(" / ")}</strong>）。それぞれの特徴を読み比べてみてください。<br>`;
+        desc = `<p>複数の傾向が近い結果になりました（<strong>${top.join(" / ")}</strong>）。それぞれの特徴を読み比べてみてください。<br><br><br></p>`;
         desc += top.map(t => `<strong>${t}</strong>：${summaries[t]}`).join("<br>");
       }
 
@@ -421,6 +521,24 @@
 
       resultDesc.innerHTML = desc;
     }
+	 
+
+	  // 音声要素を取得
+    const clickSound = document.getElementById("clickSound");
+
+    // 音を鳴らす関数
+    function playClickSound() {
+      clickSound.currentTime = 0; // 毎回先頭から再生
+      clickSound.play().catch(err => {
+        console.log("音再生エラー:", err);
+      });
+    }
+
+    // 各ボタンに音を紐づけ
+    document.getElementById("yesBtn").addEventListener("click", playClickSound);
+    document.getElementById("noBtn").addEventListener("click", playClickSound);
+    document.getElementById("midBtn").addEventListener("click", playClickSound);
+
 
     // 初期化 / リトライ
     function reset(){
@@ -455,6 +573,8 @@
         alert("コピーに失敗しました。手動で選択してください。");
       });
     }
+	  
+	  
 
     // イベント
     yesBtn.addEventListener("click", ()=> answer('yes'));
@@ -479,6 +599,36 @@
 
     // 最初に表示
     showQuestion();
-  </script>
+	  
+}
+
+	  const clickSound = document.getElementById("clickSound");
+
+// 回答ボタンのイベントに音再生を追加
+function playClickSound() {
+  clickSound.currentTime = 0; // 先頭から再生
+  clickSound.play();
+}
+
+yesBtn.addEventListener("click", () => {
+  playClickSound();
+  answer('yes');
+});
+
+noBtn.addEventListener("click", () => {
+  playClickSound();
+  answer('no');
+});
+
+midBtn.addEventListener("click", () => {
+  playClickSound();
+  answer('mid');
+});
+
+	  
+	  
+</script>
+	  
 </body>
+	
 </html>
