@@ -1,17 +1,21 @@
 // GP.js
 
 
-
-	  // 音声要素を取得
+// 音声要素を取得
     const clickSound = document.getElementById("clickSound");
 
     // 音を鳴らす関数
     function playClickSound() {
       clickSound.currentTime = 0; // 毎回先頭から再生
       clickSound.play().catch(err => {
-        console.log("音再生エラー:", err);
+     console.log("音再生エラー:", err);
       });
     }
+
+const retryBtn = document.getElementById("resetBtn");
+
+retryBtn.addEventListener("click", reset);
+
 
     // 各ボタンに音を紐づけ
     document.getElementById("yesBtn").addEventListener("click", playClickSound);
@@ -45,6 +49,28 @@ let score = { LD:0, ASD:0, ADHD:0 };
 let current = 0;
 const total = questions.length;
 
+
+// 戻る/進む機能
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+backBtn.addEventListener("click", () => {
+  if(current > 0){
+    current--;
+    showQuestion();
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if(current < total - 1){
+    current++;
+    showQuestion();
+  } else {
+    showResult();
+  }
+});
+
+
 // DOM
 const qText = document.getElementById("qText");
 const qIndex = document.getElementById("qIndex");
@@ -61,8 +87,28 @@ const ldPct = document.getElementById("ldPct");
 const asdPct = document.getElementById("asdPct");
 const adhdPct = document.getElementById("adhdPct");
 const resultDesc = document.getElementById("resultDesc");
-const retryBtn = document.getElementById("retryBtn");
-const shareBtn = document.getElementById("shareBtn");
+const backToStartBtn = document.getElementById("backToStart");
+
+if (backToStartBtn) {
+  backToStartBtn.addEventListener("click", () => {
+    
+    // 音鳴らす（入れたいなら）
+    clickSound.currentTime = 0;
+    clickSound.play();
+
+    // 一番上にスクロール
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // ページをリロードして最初の状態に戻す
+    setTimeout(() => {
+      location.reload();
+    }, 400); // 音が鳴ってからリロードするため
+  });
+}
+
+
+
+
 
 // 初期表示
 function showQuestion(){
@@ -146,26 +192,14 @@ function reset(){
   adhdPct.textContent = "0%";
 }
 
-// 結果をコピー
-function copyResultText(){
-  const text = [
-    "LABEL セルフチェック結果",
-    "LD: " + ldPct.textContent,
-    "ASD: " + asdPct.textContent,
-    "ADHD: " + adhdPct.textContent,
-    "",
-    "解説：",
-    resultDesc.textContent
-  ].join("\n");
-  navigator.clipboard?.writeText(text).then(()=> alert("結果をコピーしました。"));
-}
+
 
 // イベント
 yesBtn.addEventListener("click", ()=> answer('yes'));
 noBtn.addEventListener("click", ()=> answer('no'));
 midBtn.addEventListener("click", ()=> answer('mid'));
 retryBtn.addEventListener("click", reset);
-shareBtn.addEventListener("click", copyResultText);
+
 
 // キーボード操作
 document.addEventListener("keydown", (e)=>{
@@ -175,5 +209,16 @@ document.addEventListener("keydown", (e)=>{
   else if(e.key==="3") answer('mid');
 });
 
+function showResult() {
+  document.getElementById("question-area").style.display = "none";
+  document.getElementById("resultArea").style.display = "block";
+
+  // この1行を追加
+  document.getElementById("backToStart").style.display = "block";
+}
+
+
 // 最初に表示
 showQuestion();
+
+

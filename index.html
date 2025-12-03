@@ -148,6 +148,30 @@
       box-shadow: 0 3px 6px rgba(0,0,0,0.06);
 	 
     }
+	  #resetWrapper {
+  position: absolute;       /* カード外に固定 */
+  bottom: -50px;             /* 画面下からの距離 */
+  left: 3px;
+  z-index: 1000;            /* 他要素より手前 */
+}
+
+	  
+	  
+	  
+.btn.reset {
+  background: linear-gradient(180deg, #42a5f5, #1e88e5);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+}
+
+.btn.reset:hover {
+  background: linear-gradient(180deg, #1e88e5, #1565c0); /* ホバーで濃く */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15); /* 少し強めに浮かせる */
+}
 	  
 	  .controls {
   display: flex;
@@ -192,6 +216,41 @@
       background:#155a9a;
       border:1px solid rgba(0,0,0,0.06);
     }
+	  
+
+	  
+	  
+/* 質問文下のナビボタン */
+.nav-btn {
+  width: 30px;         /* 好きな固定サイズ */
+  height: 40px;
+  border-radius: 50%;  /* 丸くする */
+  font-size: 14px;     /* 中の文字サイズ */
+  padding: 0;
+  flex: 0 0 auto;      /* 親の flex に引っ張られない */
+}
+
+
+.nav-btn {
+  border: none;
+  background: linear-gradient(180deg,#42a5f5,#1e88e5);
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  transition: none; /* 沈む挙動を消す */
+}
+
+.nav-btn:hover {
+  background: linear-gradient(180deg,#1e88e5,#1565c0); /* 少し濃くする */
+	
+}
+
+
 
     .progress{
       height:10px;
@@ -348,9 +407,17 @@
         </div>
 
         <div class="controls" role="group" aria-label="回答ボタン">
+			 <button class="nav-btn" id="backBtn" aria-label="前の質問">◀︎</button>
           <button class="btn primary" id="yesBtn">はい</button>
           <button class="btn" id="noBtn">いいえ</button>
           <button class="btn ghost" id="midBtn">どちらでもない</button>
+		
+			<div id="resetWrapper">
+  <button class="btn reset" id="resetBtn">最初から</button>
+			</div>
+		
+  <button class="nav-btn" id="nextBtn" aria-label="次の質問">▶︎</button>
+
         </div>
 
         <div class="progress" aria-hidden="true">
@@ -386,8 +453,7 @@
         <footer>
           <div class="small">作成：野田千裕</div>
           <div>
-            <button class="btn" id="retryBtn">もう一度</button>
-            <button class="btn primary" id="shareBtn">結果をテキストでコピー</button>
+            
           </div>
         </footer>
       </section>
@@ -395,239 +461,172 @@
 </div>
 
   <script>
+  // --- 質問リスト ---
+  const questions = [
+    { text: "文字や文章を読むとき、内容を追うのが人より疲れることがある", type: "LD" },
+    { text: "暗記や順序の理解が苦手で、教えられた通りに覚えにくい", type: "LD" },
+    { text: "指示や説明の細かい手順が抜け落ちがちである", type: "LD" },
+    { text: "読む・書く・計算の一部が不得手で、対人スキルは問題ない", type: "LD" },
+    { text: "情報を整理するのが苦手で、書き出すと楽になることが多い", type: "LD" },
+
+    { text: "会話の中で相手の表情や微細な意図が読み取りにくいことがある", type: "ASD" },
+    { text: "特定のルールや手順に強いこだわりがあり、それが乱れると不安になる", type: "ASD" },
+    { text: "感覚（音・光・匂い・触感）に敏感で日常に影響が出ることがある", type: "ASD" },
+    { text: "友人との雑談や世間話を自然に続けるのが難しいと感じる", type: "ASD" },
+    { text: "興味の対象が非常に限定され、それに深くのめり込むことがある", type: "ASD" },
+
+    { text: "集中し続けるのが難しく、すぐ別のことに気が向く", type: "ADHD" },
+    { text: "計画より行動優先になりやすく、後で困ることがある", type: "ADHD" },
+    { text: "忘れ物や約束をうっかり忘れることが多い", type: "ADHD" },
+    { text: "じっとしているのが苦手で、そわそわ落ち着かないことがある", type: "ADHD" },
+    { text: "思いつきで動いて失敗する一方、発想力や行動力は強みだと感じる", type: "ADHD" }
+  ];
+
+  // --- 状態 ---
+  let score = { LD:0, ASD:0, ADHD:0 };
+  let current = 0;
+  const total = questions.length;
+
 	  
-	  
-    // 質問リスト（LD / ASD / ADHD 各5問、合計15問）
-    const questions = [
-      { text: "文字や文章を読むとき、内容を追うのが人より疲れることがある", type: "LD" },
-      { text: "暗記や順序の理解が苦手で、教えられた通りに覚えにくい", type: "LD" },
-      { text: "指示や説明の細かい手順が抜け落ちがちである", type: "LD" },
-      { text: "読む・書く・計算の一部が不得手で、対人スキルは問題ない", type: "LD" },
-      { text: "情報を整理するのが苦手で、書き出すと楽になることが多い", type: "LD" },
+	  // 戻る/進む機能
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
 
-      { text: "会話の中で相手の表情や微細な意図が読み取りにくいことがある", type: "ASD" },
-      { text: "特定のルールや手順に強いこだわりがあり、それが乱れると不安になる", type: "ASD" },
-      { text: "感覚（音・光・匂い・触感）に敏感で日常に影響が出ることがある", type: "ASD" },
-      { text: "友人との雑談や世間話を自然に続けるのが難しいと感じる", type: "ASD" },
-      { text: "興味の対象が非常に限定され、それに深くのめり込むことがある", type: "ASD" },
-
-      { text: "集中し続けるのが難しく、すぐ別のことに気が向く", type: "ADHD" },
-      { text: "計画より行動優先になりやすく、後で困ることがある", type: "ADHD" },
-      { text: "忘れ物や約束をうっかり忘れることが多い", type: "ADHD" },
-      { text: "じっとしているのが苦手で、そわそわ落ち着かないことがある", type: "ADHD" },
-      { text: "思いつきで動いて失敗する一方、発想力や行動力は強みだと感じる", type: "ADHD" }
-    ];
-
-    // スコア管理
-    let score = { LD:0, ASD:0, ADHD:0 };
-    let current = 0;
-    const total = questions.length;
-
-    // DOM
-    const qText = document.getElementById("qText");
-    const qIndex = document.getElementById("qIndex");
-    const progressFill = document.getElementById("progressFill");
-    const yesBtn = document.getElementById("yesBtn");
-    const noBtn = document.getElementById("noBtn");
-    const midBtn = document.getElementById("midBtn");
-    const questionCard = document.getElementById("questionCard");
-    const resultCard = document.getElementById("resultCard");
-    const ldFill = document.getElementById("ldFill");
-    const asdFill = document.getElementById("asdFill");
-    const adhdFill = document.getElementById("adhdFill");
-    const ldPct = document.getElementById("ldPct");
-    const asdPct = document.getElementById("asdPct");
-    const adhdPct = document.getElementById("adhdPct");
-    const resultDesc = document.getElementById("resultDesc");
-    const retryBtn = document.getElementById("retryBtn");
-    const shareBtn = document.getElementById("shareBtn");
-
-    // 初期表示
-    function showQuestion(){
-      const q = questions[current];
-      qText.textContent = q.text;
-      qIndex.textContent = (current+1)+"/"+total;
-      const pct = Math.round((current/total)*100);
-      progressFill.style.width = pct + "%";
-    }
-
-    // 回答処理
-    function answer(choice){
-      if(choice === 'yes'){
-        const t = questions[current].type;
-        score[t]++;
-      } else if(choice === 'mid'){
-        // 中間は軽く0.5ポイント（任意）
-        const t = questions[current].type;
-        score[t] += 0.5;
-      }
-      current++;
-      if(current < total){
-        showQuestion();
-      } else {
-        showResult();
-      }
-    }
-
-    // 結果表示
-    function showResult(){
-      questionCard.style.display = "none";
-      resultCard.style.display = "block";
-
-      // パーセンテージ化（各項目の最大は5問 -> 5点）
-      const maxPer = 5;
-      const ldScore = Math.min(score.LD, maxPer);
-      const asdScore = Math.min(score.ASD, maxPer);
-      const adhdScore = Math.min(score.ADHD, maxPer);
-
-      const ldPercent = Math.round((ldScore / maxPer) * 100);
-      const asdPercent = Math.round((asdScore / maxPer) * 100);
-      const adhdPercent = Math.round((adhdScore / maxPer) * 100);
-
-      // バーに反映
-      ldFill.style.height = ldPercent + "%";
-      asdFill.style.height = asdPercent + "%";
-      adhdFill.style.height = adhdPercent + "%";
-      ldPct.textContent = ldPercent + "%";
-      asdPct.textContent = asdPercent + "%";
-      adhdPct.textContent = adhdPercent + "%";
-
-      // もっとも高い傾向を決定（同点は複数提示）
-      const scores = [
-        { key: "LD", v: ldPercent },
-        { key: "ASD", v: asdPercent },
-        { key: "ADHD", v: adhdPercent }
-      ];
-      const maxV = Math.max(ldPercent, asdPercent, adhdPercent);
-      const top = scores.filter(s => s.v === maxV).map(s => s.key);
-
-      const summaries = {
-        LD: "学習に関する得意・不得意の傾向が見られます。読む・書く・計算の一部で困りやすいかもしれません。教え方やツールの工夫で対応できます。<br>",
-        ASD: "相手の表情・微妙な意図や感覚面、ルールへのこだわりなどの特徴が見られます。対人場面で疲れやすい・興味が偏りやすいかもしれません。<br>",
-        ADHD: "集中の持続や衝動、忘れやすさなどの傾向が見られます。計画より行動が先出ちになったり、発想力・行動力が強みになる場合もあります。<br>"
-      };
-
-      let desc = "";
-      if(maxV === 0){
-        desc = "<br>今回の回答では顕著な偏りは見られませんでした。状況や日によって変わることもあるので、気になる点が出たら再チェックしてみてください。<br>";
-      } else if(top.length === 1){
-        desc = `<br>もっとも高かったのは <strong>${top[0]}</strong> の傾向です。<br>${summaries[top[0]]}`;
-      } else {
-        desc = `<p>複数の傾向が近い結果になりました（<strong>${top.join(" / ")}</strong>）。それぞれの特徴を読み比べてみてください。<br><br><br></p>`;
-        desc += top.map(t => `<strong>${t}</strong>：${summaries[t]}`).join("<br>");
-      }
-
-      desc += "<br><br>※重要：これはあくまでセルフチェックです。確定的な診断ではありません。専門の診断が必要だと感じたら医療機関や相談窓口に相談してください。";
-
-      resultDesc.innerHTML = desc;
-    }
-	 
-
-	  // 音声要素を取得
-    const clickSound = document.getElementById("clickSound");
-
-    // 音を鳴らす関数
-    function playClickSound() {
-      clickSound.currentTime = 0; // 毎回先頭から再生
-      clickSound.play().catch(err => {
-        console.log("音再生エラー:", err);
-      });
-    }
-
-    // 各ボタンに音を紐づけ
-    document.getElementById("yesBtn").addEventListener("click", playClickSound);
-    document.getElementById("noBtn").addEventListener("click", playClickSound);
-    document.getElementById("midBtn").addEventListener("click", playClickSound);
-
-
-    // 初期化 / リトライ
-    function reset(){
-      score = { LD:0, ASD:0, ADHD:0 };
-      current = 0;
-      questionCard.style.display = "block";
-      resultCard.style.display = "none";
-      showQuestion();
-      // バーリセットアニメーション
-      ldFill.style.height = "0%";
-      asdFill.style.height = "0%";
-      adhdFill.style.height = "0%";
-      ldPct.textContent = "0%";
-      asdPct.textContent = "0%";
-      adhdPct.textContent = "0%";
-    }
-
-    // 結果をテキストでコピー
-    function copyResultText(){
-      const text = [
-        "LABEL セルフチェック結果",
-        "LD: " + ldPct.textContent,
-        "ASD: " + asdPct.textContent,
-        "ADHD: " + adhdPct.textContent,
-        "",
-        "解説：",
-        resultDesc.textContent || resultDesc.innerText
-      ].join("\n");
-      navigator.clipboard?.writeText(text).then(()=> {
-        alert("結果をコピーしました。必要な人に共有できます。");
-      }).catch(()=> {
-        alert("コピーに失敗しました。手動で選択してください。");
-      });
-    }
-	  
-	  
-
-    // イベント
-    yesBtn.addEventListener("click", ()=> answer('yes'));
-    noBtn.addEventListener("click", ()=> answer('no'));
-    midBtn.addEventListener("click", ()=> answer('mid'));
-    retryBtn.addEventListener("click", reset);
-    shareBtn.addEventListener("click", copyResultText);
-
-    // キーボード操作（Enter / 1:はい / 2:いいえ / 3:どちらでもない）
-    document.addEventListener("keydown", (e) => {
-      if(questionCard.style.display === "none") return;
-      if(e.key === "Enter"){
-        answer('yes');
-      } else if(e.key === "1"){
-        answer('yes');
-      } else if(e.key === "2"){
-        answer('no');
-      } else if(e.key === "3"){
-        answer('mid');
-      }
-    });
-
-    // 最初に表示
+backBtn.addEventListener("click", () => {
+  if(current > 0){
+    current--;
     showQuestion();
-	  
-}
-
-	  const clickSound = document.getElementById("clickSound");
-
-// 回答ボタンのイベントに音再生を追加
-function playClickSound() {
-  clickSound.currentTime = 0; // 先頭から再生
-  clickSound.play();
-}
-
-yesBtn.addEventListener("click", () => {
-  playClickSound();
-  answer('yes');
+  }
 });
 
-noBtn.addEventListener("click", () => {
-  playClickSound();
-  answer('no');
-});
-
-midBtn.addEventListener("click", () => {
-  playClickSound();
-  answer('mid');
+nextBtn.addEventListener("click", () => {
+  if(current < total - 1){
+    current++;
+    showQuestion();
+  } else {
+    showResult();
+  }
 });
 
 	  
-	  
+  // --- DOM ---
+  const qText = document.getElementById("qText");
+  const qIndex = document.getElementById("qIndex");
+  const progressFill = document.getElementById("progressFill");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const midBtn = document.getElementById("midBtn");
+  const resetBtn = document.getElementById("resetBtn");
+  const questionCard = document.getElementById("questionCard");
+  const resultCard = document.getElementById("resultCard");
+  const ldFill = document.getElementById("ldFill");
+  const asdFill = document.getElementById("asdFill");
+  const adhdFill = document.getElementById("adhdFill");
+  const ldPct = document.getElementById("ldPct");
+  const asdPct = document.getElementById("asdPct");
+  const adhdPct = document.getElementById("adhdPct");
+  const resultDesc = document.getElementById("resultDesc");
+
+  const clickSound = document.getElementById("clickSound");
+
+  // --- 表示 ---
+  function showQuestion() {
+    if(current >= total) return;
+    const q = questions[current];
+    qText.textContent = q.text;
+    qIndex.textContent = `${current+1}/${total}`;
+    progressFill.style.width = Math.round((current/total)*100) + "%";
+  }
+
+  // --- 回答 ---
+  function answer(choice) {
+    const type = questions[current].type;
+    if(choice === 'yes') score[type]++;
+    else if(choice === 'mid') score[type] += 0.5;
+
+    current++;
+    if(current < total) showQuestion();
+    else showResult();
+  }
+
+  // --- 結果表示 ---
+  function showResult() {
+    questionCard.style.display = "none";
+    resultCard.style.display = "block";
+
+    const maxPer = 5;
+    const ldPercent = Math.round(Math.min(score.LD, maxPer)/maxPer*100);
+    const asdPercent = Math.round(Math.min(score.ASD, maxPer)/maxPer*100);
+    const adhdPercent = Math.round(Math.min(score.ADHD, maxPer)/maxPer*100);
+
+    ldFill.style.height = ldPercent + "%";
+    asdFill.style.height = asdPercent + "%";
+    adhdFill.style.height = adhdPercent + "%";
+    ldPct.textContent = ldPercent + "%";
+    asdPct.textContent = asdPercent + "%";
+    adhdPct.textContent = adhdPercent + "%";
+
+    const scoresArr = [
+      { key:"LD", v: ldPercent },
+      { key:"ASD", v: asdPercent },
+      { key:"ADHD", v: adhdPercent }
+    ];
+    const maxV = Math.max(ldPercent, asdPercent, adhdPercent);
+    const top = scoresArr.filter(s=>s.v===maxV).map(s=>s.key);
+
+    const summaries = {
+      LD: "学習に関する得意・不得意の傾向が見られます。",
+      ASD: "相手の表情・微妙な意図や感覚面の特徴があります。",
+      ADHD: "集中の持続や衝動、忘れやすさなどの傾向があります。"
+    };
+
+    let desc = "";
+    if(maxV===0){
+      desc = "今回の回答では顕著な偏りは見られませんでした。";
+    } else if(top.length===1){
+      desc = `もっとも高かったのは <span class="result-${top[0]}">${top[0]}</span> の傾向です。<br>${summaries[top[0]]}`;
+    } else {
+      desc = `複数の傾向が近い結果になりました（${top.map(t=>`<span class="result-${t}">${t}</span>`).join(" / ")}）。<br>`;
+      desc += top.map(t=>`<span class="result-${t}">${summaries[t]}</span>`).join("<br>");
+    }
+
+    resultDesc.innerHTML = desc;
+  }
+
+  // --- リセット ---
+  function reset() {
+    score = { LD:0, ASD:0, ADHD:0 };
+    current = 0;
+    questionCard.style.display = "block";
+    resultCard.style.display = "none";
+    showQuestion();
+    ldFill.style.height = "0%";
+    asdFill.style.height = "0%";
+    adhdFill.style.height = "0%";
+    ldPct.textContent = "0%";
+    asdPct.textContent = "0%";
+    adhdPct.textContent = "0%";
+  }
+
+  // --- 音 ---
+  function playClickSound(){
+    if(!clickSound) return;
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e=>console.log(e));
+  }
+
+  // --- イベント ---
+  yesBtn.addEventListener("click", ()=>{ playClickSound(); answer('yes'); });
+  noBtn.addEventListener("click", ()=>{ playClickSound(); answer('no'); });
+  midBtn.addEventListener("click", ()=>{ playClickSound(); answer('mid'); });
+  resetBtn.addEventListener("click", reset);
+
+  // --- 初期表示 ---
+  showQuestion();
 </script>
+	
+	
+
 	  
 </body>
 	
