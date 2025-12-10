@@ -39,6 +39,22 @@
   backdrop-filter: blur(6px) saturate(120%);
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
+  html, body {
+    padding-top: 40px;  /* 上の余白を自然に */
+    padding-bottom: 40px;
+  }
+
+  #app {
+    border-radius: 24px;
+    padding: 32px;
+  }
+}
+
+	  #cloud1, #cloud2 {
+  max-width: 28vw;     /* 画面幅に合わせて縮む */
+  top: 5vh;
+}
 
 	  
 /* 雲GIFのサイズと位置調整 */
