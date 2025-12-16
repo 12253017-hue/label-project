@@ -39,7 +39,126 @@ body {
 }
 
 
+	  /* ===== iPad Air 第4世代（縦）最適化 ===== */
+@media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
 
+  body {
+    padding: 36px 28px 44px;
+  }
+
+  #app {
+    max-width: 720px;   /* ←ここが効く */
+    padding: 32px;
+    margin: 16px auto;
+  }
+}
+
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  header {
+    gap: 20px;
+    margin-bottom: 36px;
+    align-items: flex-start;
+  }
+
+  header img {
+    width: 120px;
+    height: auto;
+  }
+
+  header p.lead {
+    font-size: 15.5px;
+    line-height: 1.75;
+    top: 0;
+  }
+}
+
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  .card {
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+
+  .question-area {
+    gap: 28px;
+  }
+
+  .q-text {
+    font-size: 18px;
+    line-height: 1.65;
+    margin-left: -20px; /* マイナス弱め */
+  }
+
+  .q-index {
+    transform: none;
+  }
+}
+
+	  
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  .controls {
+    gap: 18px;
+    margin-top: 24px;
+  }
+
+  .controls button {
+    min-width: 140px;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+
+  .nav-btn {
+    order: 10;
+  }
+}
+
+	  
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  #cloud1, #cloud2 {
+    max-width: 20vw;
+    opacity: 0.75;
+    top: 1.5vh;
+  }
+}
+
+	  
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  .result {
+    padding: 32px 24px;
+  }
+
+  .bars {
+    margin-top: 28px;
+  }
+
+  .desc {
+    font-size: 16.5px;
+    line-height: 1.75;
+    margin-top: 24px;
+  }
+}
 
 
 .q-index {

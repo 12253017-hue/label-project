@@ -209,12 +209,15 @@ document.addEventListener("keydown", (e)=>{
   else if(e.key==="3") answer('mid');
 });
 
-function showResult() {
+function showResult {
   document.getElementById("question-area").style.display = "none";
   document.getElementById("resultArea").style.display = "block";
-
-  // この1行を追加
   document.getElementById("backToStart").style.display = "block";
+}
+
+const resultResetBtn = document.getElementById("resultResetBtn");
+if(resultResetBtn){
+  resultResetBtn.addEventListener("click", reset);
 }
 
 
