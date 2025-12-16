@@ -189,15 +189,15 @@
 #cloud2 { right: 5vw; }
 
 	  
-/* 雲GIFのサイズと位置調整 */
 #cloud1 {
   position: absolute;
-  top: 10px;       /* ロゴと同じ高さくらい */
-  left: -300px;     /* ロゴの右に配置 */
-  width: 350px;    /* 大きめに表示 */
-  z-index: 500;    /* ロゴより手前 */
+  top: 10px;       /* 高さはそのまま */
+  left: 50px;      /* -300px → 50px に変更して右へ */
+  width: 350px;
+  z-index: 500;
   animation: float 4s ease-in-out infinite;
 }
+
 
 /* 浮く動き */
 @keyframes float {
