@@ -608,6 +608,7 @@
 
           <div class="desc" id="resultDesc"></div>
           <div class="note" id="finalNote">結果はあくまで傾向です。「ラベル」ではなく「ヒント」として受け取ってください。</div>
+			
         </div>
 
         <footer>
@@ -680,7 +681,7 @@ nextBtn.addEventListener("click", () => {
   const yesBtn = document.getElementById("yesBtn");
   const noBtn = document.getElementById("noBtn");
   const midBtn = document.getElementById("midBtn");
-  const resetBtn = document.getElementById("resetBtn");
+  const resultResetBtn = document.getElementById("resultResetBtn");
   const questionCard = document.getElementById("questionCard");
   const resultCard = document.getElementById("resultCard");
   const ldFill = document.getElementById("ldFill");
@@ -693,14 +694,7 @@ nextBtn.addEventListener("click", () => {
 
   const clickSound = document.getElementById("clickSound");
 
-  // --- 表示 ---
-  function showQuestion() {
-    if(current >= total) return;
-    const q = questions[current];
-    qText.textContent = q.text;
-    qIndex.textContent = `${current+1}/${total}`;
-    progressFill.style.width = Math.round((current/total)*100) + "%";
-  }
+ 
 
   // --- 回答 ---
   function answer(choice) {
@@ -785,14 +779,24 @@ nextBtn.addEventListener("click", () => {
   midBtn.addEventListener("click", ()=>{ playClickSound(); answer('mid'); });
   resetBtn.addEventListener("click", reset);
 
-  // --- 初期表示 ---
-  showQuestion();
 	  
-	  const resultResetBtn = document.getElementById("resultResetBtn");
-	  if(resultResetBtn){
-  resultResetBtn.addEventListener("click", reset);
-}
+	  showQuestion();
+	  
+const resultResetBtn = document.getElementById("resultResetBtn");
+resultResetBtn.addEventListener("click", reset);
 
+	  function showQuestion() {
+  if (!qText || !qIndex) return;
+  if (!questions[current]) return;
+
+  const q = questions[current];
+  qText.textContent = q.text;
+  qIndex.textContent = `${current + 1}/${total}`;
+  progressFill.style.width =
+    Math.round((current / total) * 100) + "%";
+}
+	  
+	  
 
 </script>
 	
