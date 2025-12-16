@@ -1,5 +1,3 @@
-// GP.js
-
 /* =====================
    初期設定
 ===================== */
@@ -139,10 +137,11 @@ function showResult() {
     ADHD: "集中や衝動性に個性があります。"
   };
 
+  // 色分け付き表示
   resultDesc.innerHTML =
     top.length === 1
-      ? `最も強く出たのは <span class="result-${top[0]}">${top[0]}</span> です。<br>${summary[top[0]]}`
-      : `複数の傾向が近い結果です。<br>${top.map(t => summary[t]).join("<br>")}`;
+      ? `最も強く出たのは <span class="result-${top[0]}">${top[0]}</span> です。<br><span class="result-${top[0]}">${summary[top[0]]}</span>`
+      : `複数の傾向が近い結果です。<br>${top.map(t => `<span class="result-${t}">${t}: ${summary[t]}</span>`).join("<br>")}`;
 }
 
 
