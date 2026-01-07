@@ -24,22 +24,9 @@
   and (max-width: 834px) 
   and (orientation: portrait) {
 
-  #app {
-    margin-top: 60px;
-  }
-}
-
-
   body {
     padding: 36px 28px 44px;
   }
-
-  #app {
-    max-width: 720px;   /* ←ここが効く */
-    padding: 32px;
-    margin: 16px auto;
-  }
-}
 
 	  @media screen 
   and (min-width: 810px) 
@@ -163,16 +150,17 @@
   display: block;            /* フレックス解除 */
 }
 	  
-	  #app {
+	 #app {
   width: 100%;
   max-width: 760px;
-  margin: 0 auto;            /* 横だけ中央。縦センタリングしない */
+  margin: 60px auto 0;
   background: var(--glass);
   border-radius: 20px;
   padding: 20px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(6px) saturate(120%);
 }
+
 
 @media (min-width: 768px) and (max-width: 1024px) {
   html, body {
