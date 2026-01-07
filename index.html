@@ -17,22 +17,8 @@
       --shadow: 0 6px 18px rgba(0,0,0,0.08);
       font-family: "Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro","Yu Gothic","Segoe UI",sans-serif;
     }
-
-
-	  #app {
-  width: 100%;
-  max-width: 760px;
-  margin: 60px auto 0;
-  background: var(--glass);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(6px) saturate(120%);
-}
-
 	  
 	  /* ===== iPad Air 第4世代（縦）最適化 ===== */
-	  
 @media screen 
   and (min-width: 810px) 
   and (max-width: 834px) 
@@ -42,19 +28,9 @@
     padding: 36px 28px 44px;
   }
 
-
-	#app{
-  width:100%;
-  max-width:760px;
-  margin: 60px auto 0;   /* ← ここ */
-  background:var(--glass);
-  border-radius:20px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  backdrop-filter: blur(6px) saturate(120%);
-  border: 1px solid rgba(0,0,0,0.04);
-}
-
+  #app {
+    margin-top: 60px;
+  }
 
   header {
     gap: 20px;
@@ -72,7 +48,14 @@
     line-height: 1.75;
     top: 0;
   }
-}
+
+  .card {
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+
+  /* 他のiPad調整もここに全部入れる*
+
 
   .card {
     padding: 28px;
@@ -116,6 +99,11 @@
   }
 }
 
+	  
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
 
   #cloud1, #cloud2 {
     max-width: 20vw;
@@ -124,6 +112,11 @@
   }
 }
 
+	  
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
 
   .result {
     padding: 32px 24px;
@@ -152,6 +145,28 @@
   display: block;            /* フレックス解除 */
 }
 	  
+	  #app {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;            /* 横だけ中央。縦センタリングしない */
+  background: var(--glass);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  html, body {
+    padding-top: 40px;  /* 上の余白を自然に */
+    padding-bottom: 40px;
+  }
+
+  #app {
+    border-radius: 24px;
+    padding: 32px;
+  }
+}
 
 	  #cloud1, #cloud2 {
   max-width: 28vw;     /* 画面幅に合わせて縮む */
@@ -172,8 +187,8 @@
 #cloud1 {
   position: absolute;
   top: 10px;       /* ロゴと同じ高さくらい */
-  left: -200px;     /* ロゴの右に配置 */
-  width: 450px;    /* 大きめに表示 */
+  left: -300px;     /* ロゴの右に配置 */
+  width: 350px;    /* 大きめに表示 */
   z-index: 500;    /* ロゴより手前 */
   animation: float 4s ease-in-out infinite;
 }
@@ -208,6 +223,16 @@
 
 .cloud-gif:nth-child(1) { top: 30px; left: 50px; width: 150px; }
 	  
+    #app{
+      width:100%;
+      max-width:760px;
+      background:var(--glass);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(6px) saturate(120%);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
 
     header {
   display: flex;
@@ -499,6 +524,11 @@
       color:var(--muted);
     }
 
+    @media (max-width:520px){
+      .bars{flex-direction:row;gap:8px}
+      .bar .meter{height:80px}
+    }
+	  
 	  /* 「もう一度」ボタンの文字色 */
 #retryBtn {
   color: #1976d2;
@@ -518,7 +548,7 @@
 
 <header>
 <div>
-<img src="label_logo.svg" alt="logo" width="100" height="50">
+<img src="LABEL_logo.svg" alt="logo" width="100" height="50">
    <audio id="clickSound" src="click.mp3"></audio>
 
 	</div>
@@ -699,7 +729,7 @@ nextBtn.addEventListener("click", () => {
     const summaries = {
       LD: "学習に関する得意・不得意の傾向が見られます。",
       ASD: "相手の表情・微妙な意図や感覚面の特徴があります。",
-      ADHD: "集中の持続や衝動、忘れやすさなどの傾向があります。"
+      ADHD: "集中の持続や衝動、忘れやすいなどの傾向があります。"
     };
 
     let desc = "";
