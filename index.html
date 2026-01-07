@@ -32,6 +32,21 @@
 
 	  
 	  /* ===== iPad Air 第4世代（縦）最適化 ===== */
+
+
+#app{
+  width:100%;
+  max-width:760px;
+  margin: 60px auto 0;   /* ← ここ */
+  background:var(--glass);
+  border-radius:20px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  backdrop-filter: blur(6px) saturate(120%);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+	  
 @media screen 
   and (min-width: 810px) 
   and (max-width: 834px) 
@@ -40,11 +55,6 @@
   body {
     padding: 36px 28px 44px;
   }
-
-	  @media screen 
-  and (min-width: 810px) 
-  and (max-width: 834px) 
-  and (orientation: portrait) {
 
   header {
     gap: 20px;
@@ -63,17 +73,6 @@
     top: 0;
   }
 }
-
-@media screen 
-  and (min-width: 810px) 
-  and (max-width: 834px) 
-  and (orientation: portrait) {
-
-  #app {
-    margin-top: 60px;
-  }
-}
-
 
   .card {
     padding: 28px;
@@ -117,11 +116,6 @@
   }
 }
 
-	  
-	  @media screen 
-  and (min-width: 810px) 
-  and (max-width: 834px) 
-  and (orientation: portrait) {
 
   #cloud1, #cloud2 {
     max-width: 20vw;
@@ -130,11 +124,6 @@
   }
 }
 
-	  
-	  @media screen 
-  and (min-width: 810px) 
-  and (max-width: 834px) 
-  and (orientation: portrait) {
 
   .result {
     padding: 32px 24px;
@@ -163,13 +152,6 @@
   display: block;            /* フレックス解除 */
 }
 	  
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  html, body {
-    padding-top: 40px;  /* 上の余白を自然に */
-    padding-bottom: 40px;
-  }
-
 
 	  #cloud1, #cloud2 {
   max-width: 28vw;     /* 画面幅に合わせて縮む */
@@ -517,11 +499,6 @@
       color:var(--muted);
     }
 
-    @media (max-width:520px){
-      .bars{flex-direction:row;gap:8px}
-      .bar .meter{height:80px}
-    }
-	  
 	  /* 「もう一度」ボタンの文字色 */
 #retryBtn {
   color: #1976d2;
