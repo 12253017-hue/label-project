@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja"><head>
   <meta charset="utf-8" />
@@ -24,13 +25,27 @@
   and (max-width: 834px) 
   and (orientation: portrait) {
 
+  #app {
+    margin-top: 60px;
+  }
+}
+
+
   body {
     padding: 36px 28px 44px;
   }
 
   #app {
-    margin-top: 60px;
+    max-width: 720px;   /* ←ここが効く */
+    padding: 32px;
+    margin: 16px auto;
   }
+}
+
+	  @media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
 
   header {
     gap: 20px;
@@ -48,13 +63,17 @@
     line-height: 1.75;
     top: 0;
   }
+}
 
-  .card {
-    padding: 28px;
-    margin-bottom: 28px;
+@media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  #app {
+    margin-top: 60px;
   }
-
-  /* 他のiPad調整もここに全部入れる*
+}
 
 
   .card {
@@ -187,8 +206,8 @@
 #cloud1 {
   position: absolute;
   top: 10px;       /* ロゴと同じ高さくらい */
-  left: -300px;     /* ロゴの右に配置 */
-  width: 350px;    /* 大きめに表示 */
+  left: -200px;     /* ロゴの右に配置 */
+  width: 450px;    /* 大きめに表示 */
   z-index: 500;    /* ロゴより手前 */
   animation: float 4s ease-in-out infinite;
 }
@@ -548,7 +567,7 @@
 
 <header>
 <div>
-<img src="LABEL_logo.svg" alt="logo" width="100" height="50">
+<img src="label_logo.svg" alt="logo" width="100" height="50">
    <audio id="clickSound" src="click.mp3"></audio>
 
 	</div>
@@ -729,7 +748,7 @@ nextBtn.addEventListener("click", () => {
     const summaries = {
       LD: "学習に関する得意・不得意の傾向が見られます。",
       ASD: "相手の表情・微妙な意図や感覚面の特徴があります。",
-      ADHD: "集中の持続や衝動、忘れやすいなどの傾向があります。"
+      ADHD: "集中の持続や衝動、忘れやすさなどの傾向があります。"
     };
 
     let desc = "";
