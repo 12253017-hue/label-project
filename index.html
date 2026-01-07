@@ -54,6 +54,9 @@
     margin-bottom: 28px;
   }
 
+  /* 他のiPad調整もここに全部入れる*
+
+
   .card {
     padding: 28px;
     margin-bottom: 28px;
@@ -73,20 +76,6 @@
     transform: none;
   }
 }
-
-	      .logo{
-      width:64px;
-      height:64px;
-      border-radius:10px;
-      background: linear-gradient(135deg,#ffd54f,#ffb74d);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:800;
-      color:#532e00;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
-      flex-shrink:0;
-    }
 
 	  
 	  @media screen 
@@ -172,10 +161,19 @@
     padding-top: 40px;  /* 上の余白を自然に */
     padding-bottom: 40px;
   }
-	
+
+  #app {
+    border-radius: 24px;
+    padding: 32px;
+  }
+}
+
 	  #cloud1, #cloud2 {
   max-width: 28vw;     /* 画面幅に合わせて縮む */
   top: 5vh;
+}
+
+	  #cloud1, #cloud2 {
   position: absolute;
   top: 5vh;
   max-width: 20vw;
@@ -225,20 +223,16 @@
 
 .cloud-gif:nth-child(1) { top: 30px; left: 50px; width: 150px; }
 	  
-  #app{
-  position: relative;   /* ← 必須 */
-  z-index: 1000;        /* ← 雲より前に出す */
-
-  width:100%;
-  max-width:760px;
-  background:var(--glass);
-  border-radius:20px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  backdrop-filter: blur(6px) saturate(120%);
-  border: 1px solid rgba(0,0,0,0.04);
-}
-
+    #app{
+      width:100%;
+      max-width:760px;
+      background:var(--glass);
+      border-radius:20px;
+      padding:20px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(6px) saturate(120%);
+      border: 1px solid rgba(0,0,0,0.04);
+    }
 
     header {
   display: flex;
@@ -254,6 +248,19 @@
 }
 
 
+    .logo{
+      width:64px;
+      height:64px;
+      border-radius:10px;
+      background: linear-gradient(135deg,#ffd54f,#ffb74d);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:#532e00;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+      flex-shrink:0;
+    }
 
     h1{
       margin:0;
