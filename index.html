@@ -32,9 +32,18 @@
 
 	  
 	  /* ===== iPad Air 第4世代（縦）最適化 ===== */
+	  
+@media screen 
+  and (min-width: 810px) 
+  and (max-width: 834px) 
+  and (orientation: portrait) {
+
+  body {
+    padding: 36px 28px 44px;
+  }
 
 
-#app{
+	#app{
   width:100%;
   max-width:760px;
   margin: 60px auto 0;   /* ← ここ */
@@ -46,15 +55,6 @@
   border: 1px solid rgba(0,0,0,0.04);
 }
 
-	  
-@media screen 
-  and (min-width: 810px) 
-  and (max-width: 834px) 
-  and (orientation: portrait) {
-
-  body {
-    padding: 36px 28px 44px;
-  }
 
   header {
     gap: 20px;
