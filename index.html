@@ -17,6 +17,19 @@
       --shadow: 0 6px 18px rgba(0,0,0,0.08);
       font-family: "Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro","Yu Gothic","Segoe UI",sans-serif;
     }
+
+
+	  #app {
+  width: 100%;
+  max-width: 760px;
+  margin: 60px auto 0;
+  background: var(--glass);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+
 	  
 	  /* ===== iPad Air 第4世代（縦）最適化 ===== */
 @media screen 
@@ -150,17 +163,6 @@
   display: block;            /* フレックス解除 */
 }
 	  
-	 #app {
-  width: 100%;
-  max-width: 760px;
-  margin: 60px auto 0;
-  background: var(--glass);
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(6px) saturate(120%);
-}
-
 
 @media (min-width: 768px) and (max-width: 1024px) {
   html, body {
@@ -168,11 +170,6 @@
     padding-bottom: 40px;
   }
 
-  #app {
-    border-radius: 24px;
-    padding: 32px;
-  }
-}
 
 	  #cloud1, #cloud2 {
   max-width: 28vw;     /* 画面幅に合わせて縮む */
@@ -229,18 +226,6 @@
 
 .cloud-gif:nth-child(1) { top: 30px; left: 50px; width: 150px; }
 	  
-    #app{
-  width:100%;
-  max-width:760px;
-  margin: 60px auto 0;   /* ← これを追加 */
-  background:var(--glass);
-  border-radius:20px;
-  padding:20px;
-  box-shadow:var(--shadow);
-  backdrop-filter: blur(6px) saturate(120%);
-  border: 1px solid rgba(0,0,0,0.04);
-}
-
 
     header {
   display: flex;
